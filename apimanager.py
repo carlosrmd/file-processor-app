@@ -98,7 +98,4 @@ class MeliApiManager(ApiManager):
                 else:
                     logger.file_logger.log("Bad element: %s,%s" % (item[0], item[1]))
         for task in as_completed(processes):
-            current_item = task.result()
-            if current_item:
-                pass
-                #db.db_connection.store_record(current_item)
+            task.result()
