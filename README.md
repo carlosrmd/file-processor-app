@@ -41,7 +41,7 @@ Navegar al directorio del repo descargado:
 
 `cd file-processor-app`
 
-Incluir en el directorio el archivo que se desea procesar. Editar `config.py` y agregar las características del archivo a procesar.
+Incluir en el directorio el archivo que se desea procesar. Editar `config.py` y agregar las características del archivo a procesar. Los formatos soportados son: 'csv', 'jsonlines' y 'text'.
 ```python
 file_line_separator = ','
 file_encoding = 'utf8'
