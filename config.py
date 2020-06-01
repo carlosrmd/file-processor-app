@@ -12,6 +12,7 @@ class AppConfig:
     api_base_url = 'https://api.mercadolibre.com'
     file_line_separator = ','
     file_encoding = 'utf8'
+    file_format = 'csv'  # supported: csv, text, jsonlines
     date_format = '%Y-%m-%dT%H:%M:%S.%fZ'
     log_file_name = 'logs.txt'
     info = 'Task done. Check: /logs for problems encountered'

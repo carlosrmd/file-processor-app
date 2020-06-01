@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, request, jsonify
 
 from apimanager import MeliApiManager
-from filereader import FileProcessor, FileReader, CsvFileFormatter
+from filereader import FileProcessor, FileReader, file_format_classes
 
 import config
 import db
@@ -22,7 +22,7 @@ def process_file():
     logger.file_logger.init_logger()
 
     api_manager = MeliApiManager(config.AppConfig.api_base_url)
-    formatter = CsvFileFormatter(config.AppConfig.file_line_separator)
+    formatter = file_format_classes[config.AppConfig.file_format](config.AppConfig.file_line_separator)
     file_reader = FileReader(file_name, formatter, config.AppConfig.file_encoding)
 
     fp = FileProcessor(file_reader, chunk_size, api_manager)

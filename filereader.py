@@ -1,16 +1,35 @@
 from itertools import islice
+import json
 
 
 class FileFormatter:
 
     def __init__(self, separator):
         self.separator = separator
+        self.skip_first_line = False
 
     def format(self, line):
         raise NotImplementedError
 
 
 class CsvFileFormatter(FileFormatter):
+
+    def __init__(self, separator):
+        super().__init__(separator)
+        self.skip_first_line = True
+
+    def format(self, line):
+        return line.replace('\n', '').split(self.separator)
+
+
+class JsonlinesFileFormatter(FileFormatter):
+
+    def format(self, line):
+        j = json.loads(line)
+        return [j['site'], j['id']]
+
+
+class TextFileFormatter(FileFormatter):
 
     def format(self, line):
         return line.replace('\n', '').split(self.separator)
@@ -25,7 +44,8 @@ class FileReader:
 
     def chunk_reader(self, chunk_size):
         file_descriptor = open(self.file_name, 'r', encoding=self.encoding)
-        file_descriptor.readline()  # Skip first line
+        if self._formatter.skip_first_line:
+            file_descriptor.readline()  # Skip first line
         new_round = True
         while new_round:
             print("Starting new chunk...")
@@ -52,3 +72,10 @@ class FileProcessor:
                 # Empty list implies EOF
                 break
             self._api_manager.download_and_store_items(line_set)
+
+
+file_format_classes = {
+    'csv': CsvFileFormatter,
+    'jsonlines': JsonlinesFileFormatter,
+    'text': TextFileFormatter
+}
